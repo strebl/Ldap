@@ -18,7 +18,9 @@ class LdapServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('xavrsl/ldap');
+		$this->publishes([
+		    __DIR__.'/../config/config.php' => config_path('ldap.php'),
+		]);
 	}
 
 	/**
