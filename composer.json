@@ -24,8 +24,8 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "Xavrsl\\Ldap": "src/"
+        "psr-4": {
+            "Xavrsl\\Ldap\\": "src"
         }
     },
     "minimum-stability": "stable"
