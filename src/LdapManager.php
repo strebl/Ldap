@@ -56,7 +56,7 @@ class LdapManager {
 		// connection configurations and get the configurations for the given name.
 		// If the configuration doesn't exist, we'll throw an exception and bail.
 		// $connections = $this->app['config']['database.ldap'];
-		$connections = \Config::get('ldap::'.$name);
+		$connections = \Config::get('ldap.'.$name);
 
 		if (is_null($connections))
 		{
