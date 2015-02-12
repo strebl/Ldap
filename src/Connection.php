@@ -33,14 +33,10 @@ class Connection implements ConnectionInterface {
 	function __construct($config)
 	{
 		$this->config = $config;
+
 		$this->connect();
 
-		// Ldap may optionally have a password. So, we will attempt to extract out
-		// the password from the configuration. But one is not required so we'll
-		// just use array_get to return null if one hasn't been set in config.
-		$password = array_get($config, 'bindpwd');
-
-		$this->bind($password);
+		$this->bind();
 	}
 
 	/**
