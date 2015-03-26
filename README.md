@@ -41,6 +41,7 @@ First remember to set ALL your config parameters. All sections have been well do
 Any attribute that you want to retrieve MUST be specified in the 'attributes' array.
 
 - Return an attribute from one member of your organisation :
+
 ```php
 // First possibility, with find/where methods and get
 Ldap::find('people')->where('uid', 8162)->get('displayname');
@@ -60,6 +61,7 @@ Bobby Blake
 ```
 
 - Return multiple attributes for a single member of organisation :
+
 ```php
 // Let's directly use the short method
 Ldap::people(8162)->get('displayname, mail');
@@ -88,6 +90,7 @@ array(1) [
 **NOTE :** You don't need to add the 'key' attribute's value in the 'attributes' array in the config. The package does that for you.
 
 - Return multiple attributes from multiple members of the organisation :
+
 ```php
 // Let's use the short method again
 Ldap::people('8162, 128')->get('displayname, mail');
@@ -125,6 +128,7 @@ Ldap::people('108, 8162')->get();
 ```
 
 - Query the Ldap Directory based on a wildcard :
+
 ```php
 // The long way
 Ldap::find('people')->where('login', 'bob*')->get(['displayName', 'mail']);
@@ -159,6 +163,7 @@ array(2) [
 You get the idea !!
 
 - Authenticate against the Ldap Directory :
+
 ```php
 // Depending on the filter attribute you've set in the config
 Ldap::auth('bobblake', 'm7V3ryStr0ngP@ssw0rd!')
