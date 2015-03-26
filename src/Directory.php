@@ -61,6 +61,13 @@ class Directory {
 	protected $attributes;
 
 	/**
+	 * Current global filter
+	 *
+	 * @var string
+	 */
+	protected $globalFilter = null;
+
+	/**
 	 * Create a new Ldap connection instance.
 	 *
 	 * @param  array  $config
@@ -159,7 +166,7 @@ class Directory {
 	 */
 	public function get($attributes = null)
 	{
-		$this->results = array();
+		$this->results = [];
 		$this->setEntriesFromCache();
 
 		// Make a directory query only if the info is not already in cache.
@@ -362,7 +369,7 @@ class Directory {
 				// We have the entry in cache already. No need to look for it.
 				$a = array_merge(
 					array_diff(
-						$this->requestedEntries, array($entry)
+						$this->requestedEntries, [$entry]
 					)
 				);
 
@@ -385,10 +392,16 @@ class Directory {
 		}
 		$dn = 'ou=' . $this->getOrganisationUnit() .','. $this->getConfig('basedn');
 
-		$filter = '(' . $this->booleanOperator;
+		$filter = '(&';
+
+		$filter .= '(' . $this->booleanOperator;
 		foreach($this->requestedEntries as $requestedEntry) {
 			$filter .= '(' . $this->filterAttribute . '=' . $requestedEntry . ')';
 		}
+		$filter .= ')';
+
+		$filter .= $this->getGlobalFilter();
+
 		$filter .= ')';
 
 		$attributes = $this->getConfigAttributes();
@@ -454,7 +467,7 @@ class Directory {
 			return $this->format($result[$attr]);
 		}
 		elseif(count($this->results) == 1 && count($this->attributes) > 1) {
-			$output = array();
+			$output = [];
 			$u = reset($this->results);
 			foreach($this->attributes as $a){
 				$output[$a] = array_key_exists($a, $u) ? $this->format($u[$a]) : null;
@@ -462,7 +475,7 @@ class Directory {
 			return $output;
 		}
 		else {
-			$output = array();
+			$output = [];
 			foreach($this->results as $n => $u) {
 				foreach($this->attributes as $a){
 					$output[$n][$a] = array_key_exists($a, $u) ? $this->format($u[$a]) : null;
@@ -502,6 +515,33 @@ class Directory {
 	 */
 	protected function isAssoc(array $array) {
 		return (bool)count(array_filter(array_keys($array), 'is_string'));
+	}
+
+	/**
+	 * Get the global filter
+	 *
+	 * @return string
+	 */
+	public function getGlobalFilter()
+	{
+		if($this->globalFilter === null) {
+
+			return $this->getConfig('globalFilter');
+		}
+
+		return $this->globalFilter;
+	}
+
+	/**
+	 * Set the global filter
+	 *
+	 * @param string $filter
+	 *
+	 * @return void
+	 */
+	public function setGlobalFilter($filter)
+	{
+		$this->globalFilter = $filter;
 	}
 
 }

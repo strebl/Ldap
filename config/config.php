@@ -87,6 +87,20 @@ return array(
 
 		/*
 		|--------------------------------------------------------------------------
+		| Global filter attribute
+		| Will be used to set constraints like if you only need users with a
+		| specific objectClass or to ignore all users starting with sys_*
+		| This filter will be added to your filter with an AND operator.
+		|
+		| Example: (!(|(cn=sys_*)(cn=admin_*)))
+		| This filter ignores all users with a cn starting with sys_ or admin_
+		|--------------------------------------------------------------------------
+		*/
+
+		'globalFilter'	=> '',
+
+		/*
+		|--------------------------------------------------------------------------
 		| User dn used for user authentication.
 		| This is the distinguished name of a user that will authenticate to
 		| the directory using a BIND. Typically named 'dn'

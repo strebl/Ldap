@@ -171,6 +171,36 @@ Ldap::auth('bobblake', 'm7V3ryStr0ngP@ssw0rd!')
 Will simply return **TRUE** or **FALSE**.
 
 **NOTE :** Don't forget to set the dn attribute in config for user authentication.
+
+### Global Filters
+
+Lets say you want users except the system accounts which start with `sys_` and `admin_`.
+To achieve that, just set the global filter parameter in your config:
+```php
+'globalFilter' => '(!(|(cn=sys_*)(cn=admin_*)))',
+```
+
+You only need users within a defined sub OU?
+```php
+'globalFilter' => '(ou:dn:=specialUsers)',
+```
+Combine these two filters?
+```php
+'globalFilter' => '(!(|(cn=sys_*)(cn=admin_*)))(ou:dn:=specialUsers)',
+```
+
+**NOTE: ** This filter will be applied with and AND operator.
+
+You can change the global filter on runtime:
+```php
+Ldap::connection()->setGlobalFilter('(ou:dn:=specialUsers)');
+```
+
+To get the current global filter:
+```php
+Ldap::connection()->getGlobalFilter();
+```
+
 ___
 TODOs :
 -------
