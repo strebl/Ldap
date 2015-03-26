@@ -189,7 +189,7 @@ Combine these two filters?
 'globalFilter' => '(!(|(cn=sys_*)(cn=admin_*)))(ou:dn:=specialUsers)',
 ```
 
-**NOTE: ** This filter will be applied with and AND operator.
+**NOTE :** This filter will be applied with and AND operator.
 
 You can change the global filter on runtime:
 ```php
