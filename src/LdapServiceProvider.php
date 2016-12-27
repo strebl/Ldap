@@ -1,6 +1,8 @@
 <?php namespace Xavrsl\Ldap;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
+use Xavrsl\Ldap\Providers\LdapAuthUserProvider;
 
 class LdapServiceProvider extends ServiceProvider {
 
@@ -19,8 +21,12 @@ class LdapServiceProvider extends ServiceProvider {
 	public function boot()
 	{
 		$this->publishes([
-		    __DIR__.'/../config/config.php' => config_path('ldap.php'),
-		]);
+            __DIR__ . '/config/ldap.php' => config_path('ldap.php'),
+        ]);
+
+		Auth::provider('ldap', function ($app, array $config) {
+			return new LdapAuthUserProvider($app['hash'], $config['model']);
+		});
 	}
 
 	/**
@@ -30,10 +36,10 @@ class LdapServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		//
 		$this->app['ldap'] = $this->app->share(function()
 		{
-			return new LdapManager();
+            $config = $this->app['config']->get('ldap');
+			return new LdapManager($config);
 		});
 	}
 
@@ -44,7 +50,7 @@ class LdapServiceProvider extends ServiceProvider {
 	 */
 	public function provides()
 	{
-		return array('ldap');
+		return ['ldap'];
 	}
 
 }
