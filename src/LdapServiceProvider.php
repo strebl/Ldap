@@ -38,6 +38,7 @@ class LdapServiceProvider extends ServiceProvider {
 	{
 		$this->app['ldap'] = $this->app->singleton(LdapManager::class, function()
 		{
+        	$this->mergeConfigFrom(__DIR__.'/config/ldap.php', 'ldap');
             $config = $this->app['config']->get('ldap');
 			return new LdapManager($config);
 		});
